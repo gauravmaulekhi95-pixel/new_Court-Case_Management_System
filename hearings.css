@@ -1,0 +1,59 @@
+/* Hearings Specific Layout */
+.hearings-body { background-color: #f1f5f9; }
+.hearings-container { max-width: 1200px; margin: 0 auto; padding: 100px var(--spacing-4) var(--spacing-5); }
+
+.action-header { margin-bottom: var(--spacing-5); }
+.action-header h1 { color: var(--clr-primary-900); font-size: 2rem; margin: 0; }
+
+.split-layout { display: grid; grid-template-columns: 1fr; gap: var(--spacing-5); align-items: start; }
+@media(min-width: 800px) {
+    .split-layout { grid-template-columns: 1fr 1fr; }
+}
+@media(min-width: 1024px) {
+    .split-layout { grid-template-columns: 1.1fr 1.5fr; }
+}
+
+.h-card { background: white; border-radius: var(--radius-lg); padding: var(--spacing-5); box-shadow: var(--shadow-sm); border: 1px solid var(--clr-border); }
+
+.form-panel h2 { font-size: 1.25rem; font-weight: 600; color: var(--clr-primary-800); margin-bottom: 1.5rem; border-bottom: 2px solid var(--clr-border); padding-bottom: 0.5rem; }
+.form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--clr-text-muted); text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 0.5px; }
+
+.margin-bottom-md { margin-bottom: 1.25rem; }
+.margin-bottom-lg { margin-bottom: 2rem; }
+.w-100 { width: 100%; }
+
+.form-control:disabled { background-color: #f8fafc; cursor: not-allowed; color: #94a3b8; }
+.btn-secondary { background: white; border: 1px solid var(--clr-border); color: var(--clr-text-main); font-weight: 500; font-family: inherit; }
+.btn-secondary:hover { background: #f1f5f9; color: var(--clr-primary-700); }
+
+/* Case Preview Box */
+.case-preview { background: #f8fafc; border: 1px dashed var(--clr-primary-400); padding: 1rem; border-radius: 6px; margin-bottom: 1.25rem; }
+
+/* History Timeline Panel */
+.history-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--clr-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.history-header h2 { font-size: 1.25rem; font-weight: 600; color: var(--clr-primary-800); margin: 0; }
+
+.empty-state { text-align: center; padding: 4rem 1rem; }
+.empty-state p { color: var(--clr-text-muted); font-size: 1.05rem; }
+
+/* Timeline Wrapper */
+.timeline-wrapper { padding-left: 10px; }
+.timeline-list { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--clr-primary-200); position: relative; }
+.timeline-list li { position: relative; margin-bottom: 2rem; padding-left: 1.5rem; }
+.timeline-list li:last-child { margin-bottom: 0; }
+
+.timeline-list li::before {
+    content: ''; position: absolute; left: -1.45rem; top: 0; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--clr-primary-500); border: 2px solid white; box-shadow: 0 0 0 1px var(--clr-primary-200);
+}
+
+.timeline-list li.upcoming::before { background: #10b981; box-shadow: 0 0 0 1px #34d399; }
+.timeline-list li.past::before { background: #94a3b8; box-shadow: 0 0 0 1px #cbd5e1; }
+
+.hist-date { display: inline-block; font-size: 0.85rem; font-weight: 700; color: var(--clr-primary-700); background: #e0e7ff; padding: 0.2rem 0.6rem; border-radius: 12px; margin-bottom: 0.5rem; }
+.upcoming .hist-date { background: #dcfce3; color: #065f46; }
+.past .hist-date { background: #f1f5f9; color: #475569; }
+
+.hist-content { background: #f8fafc; border: 1px solid var(--clr-border); border-radius: 8px; padding: 1rem; }
+.hist-content p { margin: 0; font-size: 0.95rem; color: #334155; line-height: 1.5; }
+.hist-status-text { margin-top: 0.5rem; font-size: 0.8rem; text-transform: uppercase; color: var(--clr-text-muted); font-weight: 600; display: block; }

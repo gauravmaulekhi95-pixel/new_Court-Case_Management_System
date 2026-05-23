@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearing Management | Digital Court System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/hearings.css">
+</head>
+<body class="hearings-body">
+    <header class="navbar db-navbar">
+        <div class="container nav-content">
+            <a href="admin-dashboard.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Hearing Administration</span>
+            </a>
+            
+            <div class="db-nav-actions" style="display: flex; gap: 1rem; align-items: center; justify-content: flex-end;">
+                <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language" style="position: relative; right: auto; top: auto;">
+                    <span class="lang-en active">EN</span>
+                    <span class="lang-divider">|</span>
+                    <span class="lang-hi">HI</span>
+                </button>
+                <a href="admin-dashboard.html" class="btn-outline btn-sm" id="btn-back">Back to Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="hearings-container fade-in visible">
+        <div class="action-header">
+            <div>
+                <h1 id="page-title">Hearing Schedule Manager</h1>
+                <p id="page-subtitle" class="text-muted" style="margin-top: 0.25rem;">Log upcoming hearings to official case records natively.</p>
+            </div>
+        </div>
+
+        <div class="split-layout">
+            <!-- Left Side: Config Form -->
+            <div class="card h-card form-panel">
+                <h2 id="form-heading">Add New Hearing</h2>
+                
+                <div class="alert alert-error" id="error-msg" style="display: none; padding: 1rem; margin-bottom: 1rem; background: #fef2f2; color: #b91c1c; border-radius: 4px; border: 1px solid #fca5a5;"></div>
+                <div class="alert alert-success" id="success-msg" style="display: none; padding: 1rem; margin-bottom: 1rem; background: #f0fdf4; color: #15803d; border-radius: 4px; border: 1px solid #bbf7d0;"></div>
+
+                <form id="add-hearing-form">
+                    <div class="form-group margin-bottom-md">
+                        <label id="lbl-case-id" for="input-case-id">Target Case ID</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="input-case-id" class="form-control" required placeholder="e.g. #CAS-2026-6412">
+                            <button type="button" class="btn btn-secondary" id="btn-load-case">Fetch</button>
+                        </div>
+                    </div>
+
+                    <div id="case-preview-box" class="case-preview" style="display: none;">
+                        <span id="lbl-preview" style="font-size: 0.8rem; text-transform: uppercase; color: var(--clr-text-muted); font-weight: 600;">Selected Case</span>
+                        <h4 id="preview-parties" style="margin: 0.25rem 0; color: var(--clr-primary-900);">Loading...</h4>
+                        <span id="preview-status" class="status-badge status-pending" style="font-size: 0.75rem; padding: 0.15rem 0.5rem;">Pending</span>
+                    </div>
+
+                    <div class="form-group margin-bottom-md">
+                        <label id="lbl-hearing-date" for="input-h-date">Next Hearing Date</label>
+                        <input type="date" id="input-h-date" class="form-control" required disabled>
+                    </div>
+
+                    <div class="form-group margin-bottom-lg">
+                        <label id="lbl-hearing-agenda" for="input-agenda">Hearing Agenda / Notes</label>
+                        <textarea id="input-agenda" class="form-control" rows="3" required placeholder="Describe the purpose of this hearing schedule..." disabled></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100" id="btn-submit" disabled>Schedule Hearing</button>
+                </form>
+            </div>
+
+            <!-- Right Side: Timeline History -->
+            <div class="card h-card history-panel">
+                <div class="history-header">
+                    <h2 id="hist-heading">Case Hearing History</h2>
+                    <span id="hist-case-id" class="text-muted" style="font-weight: 500;">No Case Selected</span>
+                </div>
+
+                <div class="history-content" id="history-content">
+                    
+                    <div class="empty-state" id="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--clr-text-muted); margin-bottom: 1rem;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <p id="empty-msg">Enter a Case ID & click "Fetch" to view past timelines.</p>
+                    </div>
+
+                    <div class="timeline-wrapper" id="timeline-wrapper" style="display: none;">
+                        <ul class="timeline-list" id="hist-timeline-list">
+                            <!-- Dynamics li blocks injected via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/hearings.js"></script>
+</body>
+</html>

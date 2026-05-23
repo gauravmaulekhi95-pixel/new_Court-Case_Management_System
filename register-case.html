@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Case | Digital Court System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        body { padding-top: 100px; }
+        .register-container { max-width: 800px; margin: 0 auto; padding: var(--spacing-4); }
+        .form-card { 
+            background: white; border-radius: var(--radius-lg); padding: var(--spacing-5);
+            box-shadow: var(--shadow-md); border: 1px solid var(--clr-border); 
+            position: relative; overflow: hidden;
+        }
+        .form-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-primary-700));
+        }
+
+        .form-header { text-align: center; margin-bottom: var(--spacing-5); }
+        .form-header h1 { font-size: 2rem; color: var(--clr-primary-800); margin-bottom: 0.5rem; }
+        .form-header p { color: var(--clr-text-muted); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); }
+        @media(min-width: 600px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .full-width { grid-column: 1 / -1; }
+
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.95rem; color: var(--clr-primary-800); }
+        .form-control { 
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.2s;
+        }
+        .form-control:focus { border-color: var(--clr-primary-500); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        
+        .alert-success {
+            display: none; background: #dcfce3; color: #15803d; border: 1px solid #bbf7d0;
+            padding: 1rem; border-radius: var(--radius-md); margin-bottom: var(--spacing-4);
+            font-weight: 500; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Digital Court System</span>
+            </a>
+            <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language">
+                <span class="lang-en active">EN</span>
+                <span class="lang-divider">|</span>
+                <span class="lang-hi">HI</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="register-container fade-in visible">
+        <div class="form-card">
+            <div class="form-header">
+                <h1 id="page-title">Case Registration Form</h1>
+                <p id="page-subtitle">File a new case securely into the digital system.</p>
+            </div>
+            
+            <div class="alert-success" id="success-message">
+                <!-- Injected via JS -->
+            </div>
+
+            <form id="reg-form">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label id="lbl-type">Case Type</label>
+                        <select id="case-type" class="form-control" required>
+                            <option value="" disabled selected id="opt-select">-- Select Type --</option>
+                            <option value="Civil" id="opt-civil">Civil</option>
+                            <option value="Criminal" id="opt-criminal">Criminal</option>
+                            <option value="Tax" id="opt-tax">Tax</option>
+                            <option value="Family" id="opt-family">Family</option>
+                            <option value="Corporate" id="opt-corp">Corporate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-petitioner">Petitioner Name</label>
+                        <input type="text" id="petitioner-name" class="form-control" required placeholder="Full Name of Petitioner">
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-respondent">Respondent Name</label>
+                        <input type="text" id="respondent-name" class="form-control" required placeholder="Full Name of Respondent">
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-advocate">Advocate Name</label>
+                        <input type="text" id="advocate-name" class="form-control" required placeholder="Presenting Advocate">
+                    </div>
+
+                    <div class="form-group">
+                        <label id="lbl-date">Filing Date</label>
+                        <input type="date" id="filing-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label id="lbl-desc">Case Description</label>
+                        <textarea id="case-desc" class="form-control" required placeholder="Briefly describe the nature of the case..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--spacing-4); display: flex; gap: var(--spacing-3);">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;" id="btn-submit">Submit Registration</button>
+                    <a href="admin-dashboard.html" class="btn btn-secondary" style="flex: 1;" id="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/register.js"></script>
+</body>
+</html>

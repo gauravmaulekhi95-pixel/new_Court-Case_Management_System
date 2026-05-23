@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Management | Digital Court System</title>
+    <meta name="description" content="Manage and track all case evidence records in the Digital Court System.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/evidence.css">
+</head>
+<body class="evidence-body">
+
+    <!-- Navbar -->
+    <header class="navbar db-navbar">
+        <div class="ev-nav-content">
+            <a href="admin-dashboard.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Evidence Management</span>
+            </a>
+
+            <div class="ev-nav-actions">
+                <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language">
+                    <span class="lang-en active">EN</span>
+                    <span class="lang-divider">|</span>
+                    <span class="lang-hi">HI</span>
+                </button>
+                <a href="admin-dashboard.html" class="btn btn-outline btn-sm" id="btn-back">← Back to Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="ev-container fade-in visible">
+
+        <div class="ev-page-header">
+            <div class="ev-header-text">
+                <h1 id="page-title">Evidence Register</h1>
+                <p id="page-subtitle">Log, track, and manage all case evidence records with full date traceability.</p>
+            </div>
+            <div class="ev-header-stats">
+                <div class="ev-stat-pill" id="stat-total-wrap">
+                    <span class="ev-stat-num" id="stat-ev-total">0</span>
+                    <span class="ev-stat-lbl" id="stat-total-lbl">Total Evidence</span>
+                </div>
+                <div class="ev-stat-pill ev-stat-pill--verified">
+                    <span class="ev-stat-num" id="stat-ev-verified">0</span>
+                    <span class="ev-stat-lbl" id="stat-verified-lbl">Verified</span>
+                </div>
+                <div class="ev-stat-pill ev-stat-pill--pending">
+                    <span class="ev-stat-num" id="stat-ev-pending">0</span>
+                    <span class="ev-stat-lbl" id="stat-pending-lbl">Pending Review</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ev-layout">
+
+            <!-- LEFT: Add Evidence Form -->
+            <aside class="ev-form-panel card">
+                <div class="ev-form-header">
+                    <div class="ev-form-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <line x1="9" y1="15" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                    <h2 id="form-heading">Add New Evidence</h2>
+                </div>
+
+                <form id="ev-form" autocomplete="off">
+                    <!-- Case ID -->
+                    <div class="ev-form-group">
+                        <label for="ev-case-id" id="lbl-case-id">Target Case ID</label>
+                        <div class="ev-input-row">
+                            <input type="text" id="ev-case-id" class="ev-input" placeholder="e.g. #CAS-2026-1234" required>
+                            <button type="button" id="btn-fetch-case" class="btn-fetch" id="btn-fetch">Fetch</button>
+                        </div>
+                        <div class="ev-case-preview" id="ev-case-preview">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            <span id="ev-preview-text">No case loaded</span>
+                        </div>
+                    </div>
+
+                    <!-- Evidence Title -->
+                    <div class="ev-form-group">
+                        <label for="ev-title" id="lbl-title">Evidence Title</label>
+                        <input type="text" id="ev-title" class="ev-input" placeholder="e.g. Witness Affidavit - Rahul Sharma.pdf" required>
+                    </div>
+
+                    <!-- Submitted By -->
+                    <div class="ev-form-group">
+                        <label for="ev-submitted-by" id="lbl-submitted-by">Submitted By</label>
+                        <input type="text" id="ev-submitted-by" class="ev-input" placeholder="Advocate / Party Name" required>
+                    </div>
+
+                    <!-- Evidence Type -->
+                    <div class="ev-form-group">
+                        <label for="ev-type" id="lbl-ev-type">Evidence Type</label>
+                        <select id="ev-type" class="ev-input ev-select" required>
+                            <option value="" id="opt-select">-- Select Type --</option>
+                            <option value="Document" id="opt-doc">Document</option>
+                            <option value="Affidavit" id="opt-aff">Affidavit</option>
+                            <option value="Photograph" id="opt-photo">Photograph</option>
+                            <option value="Video" id="opt-video">Video</option>
+                            <option value="Forensic Report" id="opt-forensic">Forensic Report</option>
+                            <option value="Witness Statement" id="opt-witness">Witness Statement</option>
+                        </select>
+                    </div>
+
+                    <!-- Log Date -->
+                    <div class="ev-form-group">
+                        <label for="ev-date" id="lbl-date">Log Date</label>
+                        <input type="date" id="ev-date" class="ev-input" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="ev-form-group">
+                        <label for="ev-description" id="lbl-desc">Description / Notes</label>
+                        <textarea id="ev-description" class="ev-input ev-textarea" rows="3" placeholder="Brief description of this evidence item..." required></textarea>
+                    </div>
+
+                    <!-- File Attachment -->
+                    <div class="ev-form-group">
+                        <label>Attach File <span style="font-weight:400; color:#94a3b8;">(optional)</span></label>
+                        <div class="ev-upload-zone" id="ev-upload-zone">
+                            <input type="file" id="ev-file-input" class="ev-file-hidden"
+                                accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.mp4,.mov,.avi">
+                            <div class="ev-upload-inner" id="ev-upload-inner">
+                                <div class="ev-upload-icon">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="16 16 12 12 8 16"></polyline>
+                                        <line x1="12" y1="12" x2="12" y2="21"></line>
+                                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                                    </svg>
+                                </div>
+                                <p class="ev-upload-text">Drag & drop or <span class="ev-upload-link">browse</span></p>
+                                <p class="ev-upload-hint">Images, PDF, Word, Video — max 5MB</p>
+                            </div>
+                            <!-- Preview area (shown after file selected) -->
+                            <div class="ev-upload-preview" id="ev-upload-preview" style="display:none">
+                                <img id="ev-img-preview" src="" alt="Preview" style="display:none">
+                                <div class="ev-file-chip" id="ev-file-chip">
+                                    <span id="ev-file-icon">📄</span>
+                                    <div>
+                                        <div class="ev-file-name" id="ev-file-name"></div>
+                                        <div class="ev-file-size" id="ev-file-size"></div>
+                                    </div>
+                                    <button type="button" class="ev-file-remove" id="ev-file-remove" title="Remove file">✕</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="ev-form-group">
+                        <label id="lbl-status">Initial Status</label>
+                        <div class="ev-radio-group">
+                            <label class="ev-radio-option">
+                                <input type="radio" name="ev-status" value="Pending Review" checked>
+                                <span class="ev-radio-label ev-radio-pending">Pending Review</span>
+                            </label>
+                            <label class="ev-radio-option">
+                                <input type="radio" name="ev-status" value="Verified">
+                                <span class="ev-radio-label ev-radio-verified">Verified</span>
+                            </label>
+                            <label class="ev-radio-option">
+                                <input type="radio" name="ev-status" value="Rejected">
+                                <span class="ev-radio-label ev-radio-rejected">Rejected</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Error / Success Messages -->
+                    <div class="ev-alert ev-alert--error" id="ev-error" style="display:none">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span id="ev-error-text">Please fill all required fields.</span>
+                    </div>
+                    <div class="ev-alert ev-alert--success" id="ev-success" style="display:none">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <span id="ev-success-text">Evidence logged successfully!</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary ev-submit-btn" id="btn-submit">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                        Log Evidence
+                    </button>
+                </form>
+            </aside>
+
+            <!-- RIGHT: Evidence List -->
+            <section class="ev-list-panel">
+                <!-- Filter Bar -->
+                <div class="ev-filter-bar card">
+                    <div class="ev-filter-left">
+                        <div class="ev-search-wrap">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ev-search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="ev-search" class="ev-search-input" placeholder="Search by title, case or party...">
+                        </div>
+                    </div>
+                    <div class="ev-filter-right">
+                        <select id="filter-ev-status" class="ev-filter-select">
+                            <option value="all">All Status</option>
+                            <option value="Pending Review">Pending Review</option>
+                            <option value="Verified">Verified</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <select id="filter-ev-type" class="ev-filter-select">
+                            <option value="all">All Types</option>
+                            <option value="Document">Document</option>
+                            <option value="Affidavit">Affidavit</option>
+                            <option value="Photograph">Photograph</option>
+                            <option value="Video">Video</option>
+                            <option value="Forensic Report">Forensic Report</option>
+                            <option value="Witness Statement">Witness Statement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="ev-list-container">
+                    <!-- Date-wise groups rendered by JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="ev-empty-state" id="ev-empty-state" style="display:none">
+                    <div class="ev-empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <h3 id="empty-title">No Evidence Records Found</h3>
+                    <p id="empty-desc">Start by fetching a case and logging your first evidence entry using the form on the left.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/evidence.js"></script>
+</body>
+</html>

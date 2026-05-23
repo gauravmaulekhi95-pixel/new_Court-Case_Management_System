@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Case Status | Digital Court System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        body { padding-top: 100px; }
+        .update-container { max-width: 700px; margin: 0 auto; padding: var(--spacing-4); }
+        .form-card { 
+            background: white; border-radius: var(--radius-lg); padding: var(--spacing-5);
+            box-shadow: var(--shadow-md); border: 1px solid var(--clr-border); 
+            position: relative; overflow: hidden;
+        }
+        .form-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--clr-primary-500), var(--clr-primary-700));
+        }
+
+        .form-header { text-align: center; margin-bottom: var(--spacing-5); }
+        .form-header h1 { font-size: 2rem; color: var(--clr-primary-800); margin-bottom: 0.5rem; }
+        .form-header p { color: var(--clr-text-muted); }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.95rem; color: var(--clr-primary-800); }
+        
+        .input-row { display: flex; gap: 0.5rem; }
+        .form-control { 
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--clr-border);
+            border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.2s;
+        }
+        .form-control:focus { border-color: var(--clr-primary-500); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+        
+        .btn-fetch {
+            background: var(--clr-primary-50); color: var(--clr-primary-600);
+            border: 1px solid var(--clr-primary-200); font-weight: 600; padding: 0 1.25rem;
+            border-radius: var(--radius-md); cursor: pointer; transition: 0.2s; white-space: nowrap;
+        }
+        .btn-fetch:hover { background: var(--clr-primary-100); }
+
+        .case-preview {
+            display: none; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500;
+            margin-top: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; color: #475569;
+        }
+        .case-preview.visible { display: flex; }
+        .case-preview.error { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+        .alert-success {
+            display: none; background: #dcfce3; color: #15803d; border: 1px solid #bbf7d0;
+            padding: 1rem; border-radius: var(--radius-md); margin-bottom: var(--spacing-4);
+            font-weight: 500; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="admin-dashboard.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Update Case</span>
+            </a>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language">
+                    <span class="lang-en active">EN</span>
+                    <span class="lang-divider">|</span>
+                    <span class="lang-hi">HI</span>
+                </button>
+                <a href="admin-dashboard.html" class="btn btn-outline btn-sm" id="btn-back">← Back</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="update-container fade-in visible">
+        <div class="form-card">
+            <div class="form-header">
+                <h1 id="page-title">Update Case Status</h1>
+                <p id="page-subtitle">Change case status and issue final judgments.</p>
+            </div>
+            
+            <div class="alert-success" id="success-message">
+                <!-- Injected via JS -->
+            </div>
+
+            <form id="update-form">
+                <!-- Target Case -->
+                <div class="form-group">
+                    <label id="lbl-case-id">Target Case ID</label>
+                    <div class="input-row">
+                        <input type="text" id="up-case-id" class="form-control" required placeholder="e.g. #CAS-2026-1234">
+                        <button type="button" id="btn-fetch" class="btn-fetch">Fetch</button>
+                    </div>
+                    <div class="case-preview" id="case-preview">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <span id="preview-text"></span>
+                    </div>
+                </div>
+
+                <!-- Update Status -->
+                <div class="form-group">
+                    <label id="lbl-status">New Status</label>
+                    <select id="up-status" class="form-control" required disabled>
+                        <option value="Pending" id="opt-pending">Pending</option>
+                        <option value="In Review" id="opt-in-review">In Review</option>
+                        <option value="Closed" id="opt-closed">Closed (Issue Judgment)</option>
+                    </select>
+                </div>
+
+                <!-- Judgment / Remarks -->
+                <div class="form-group">
+                    <label id="lbl-judgment">Judgment / Final Remarks</label>
+                    <textarea id="up-judgment" class="form-control" disabled placeholder="Enter final judgment text or latest progress updates here..."></textarea>
+                </div>
+
+                <div style="margin-top: var(--spacing-4); display: flex; gap: var(--spacing-3);">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;" id="btn-submit" disabled>Update Case</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/update-case.js"></script>
+</body>
+</html>

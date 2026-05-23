@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Court System | Case Management System</title>
+    <meta name="description" content="A modern, transparent, and fast Digital Court System to track and manage court cases securely.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Digital Court System</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#home" id="nav-home">Home</a>
+                <a href="#status" id="nav-status">Check Case Status</a>
+        
+                <a href="admin-login.html" id="nav-login" class="btn-outline">Admin Login</a>
+                <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language">
+                    <span class="lang-en active">EN</span>
+                    <span class="lang-divider">|</span>
+                    <span class="lang-hi">HI</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero fade-in">
+            <div class="container hero-content">
+                <h1 id="hero-title">Justice Facilitated: Transparent, Fast, & Digital</h1>
+                <p id="hero-subtitle">Welcome to the Official Digital Court Management System. Streamlined record-keeping and case tracking at your fingertips.</p>
+                <div class="hero-actions">
+                    <a href="case-status.html" class="btn btn-primary" id="btn-check">Check Case Status</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features container">
+            <div class="section-title">
+                <h2 id="features-title">Core Pillars of Our System</h2>
+            </div>
+            <div class="grid cards">
+                <div class="card fade-in">
+                    <div class="card-icon">👁️</div>
+                    <h3 id="card-1-title">Transparency</h3>
+                    <p id="card-1-desc">Ensure complete visibility of your case status and judicial proceedings anytime with an easy access.</p>
+                </div>
+                <div class="card fade-in delay-1">
+                    <div class="card-icon">⚡</div>
+                    <h3 id="card-2-title">Fast Tracking</h3>
+                    <p id="card-2-desc">Expedited hearings and optimized schedules to reduce pendency and prioritize justice delivery.</p>
+                </div>
+                <div class="card fade-in delay-2">
+                    <div class="card-icon">📁</div>
+                    <h3 id="card-3-title">Digital Records</h3>
+                    <p id="card-3-desc">End-to-end encryption for e-filing, document storage, and seamless accessibility for legal entities.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <b id="footer-title">Digital Court System</b>
+                <p id="footer-desc">Empowering Justice through Technology.</p>
+            </div>
+            <div class="footer-contact">
+                <h4 id="footer-contact-title">Contact Us</h4>
+                <p>Email: support@digitalcourt.gov.in</p>
+                <p>Phone: +91 1800-JUSTICE (*Toll Free)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p id="footer-copy">&copy; Digital Court Case Management System. </p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

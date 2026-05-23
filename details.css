@@ -1,0 +1,80 @@
+/* Details Page Specific Styling */
+.details-body { background-color: #f1f5f9; }
+.details-container { max-width: 900px; margin: 0 auto; padding: 100px var(--spacing-4) var(--spacing-5); }
+
+.action-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-4); flex-wrap: wrap; gap: 1rem; }
+.action-header h1 { color: var(--clr-primary-900); font-size: 2rem; }
+
+/* Progress Bar */
+.progress-container { background: white; border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: var(--spacing-4); border: 1px solid var(--clr-border); box-shadow: var(--shadow-sm); }
+.progress-timeline { display: flex; justify-content: space-between; list-style-type: none; margin: 0; padding: 0; position: relative; }
+.progress-timeline::before { content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 3px; background: #e2e8f0; z-index: 1; }
+.progress-timeline li { position: relative; z-index: 2; text-align: center; flex: 1; font-weight: 500; font-size: 0.85rem; color: var(--clr-text-muted); }
+.progress-timeline li::before { 
+    content: ''; display: block; width: 32px; height: 32px; background: white; border: 3px solid #e2e8f0;
+    border-radius: 50%; margin: 0 auto 0.5rem auto; transition: 0.3s;
+}
+.progress-timeline li.completed { color: var(--clr-primary-700); }
+.progress-timeline li.completed::before { background: var(--clr-primary-600); border-color: var(--clr-primary-600); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); }
+.progress-timeline li.active { color: var(--clr-primary-900); font-weight: 600; }
+.progress-timeline li.active::before { border-color: var(--clr-primary-600); background: white; }
+.progress-timeline li.completed ~ li::before { background: white; border-color: #e2e8f0; }
+
+/* Legal Document Card */
+.legal-document-card { 
+    background: white; border-radius: 4px; padding: 3rem 4rem; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--clr-border); 
+    color: #1e293b; font-family: 'Times New Roman', Times, serif; /* Give it a formal legal feel, or fallback to inter */
+    font-size: 1.05rem;
+}
+
+.doc-section { margin-bottom: 2rem; }
+.doc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.doc-section h2 { font-family: 'Inter', sans-serif; font-size: 1.25rem; color: var(--clr-primary-800); text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--clr-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+
+.doc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+.full-row { grid-column: 1 / -1; }
+.margin-top-md { margin-top: 1.5rem; }
+
+.doc-label { display: block; font-family: 'Inter', sans-serif; font-size: 0.8rem; text-transform: uppercase; color: var(--clr-text-muted); font-weight: 600; margin-bottom: 0.25rem; }
+.doc-value { display: block; font-weight: bold; color: #0f172a; }
+.doc-text { line-height: 1.6; color: #334155; }
+
+.doc-divider { border: 0; height: 1px; background: var(--clr-border); margin: 2rem 0; }
+
+/* Timeline UI */
+.timeline-list { border-left: 2px solid var(--clr-primary-200); padding-left: 1.5rem; margin-left: 0.5rem; }
+.timeline-item { position: relative; margin-bottom: 1.5rem; }
+.timeline-item::before { content: ''; position: absolute; left: -1.82rem; top: 0.25rem; width: 12px; height: 12px; border-radius: 50%; background: var(--clr-primary-600); border: 2px solid white; box-shadow: 0 0 0 1px var(--clr-primary-200); }
+.tl-date { display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--clr-primary-700); margin-bottom: 0.25rem; }
+.tl-content p { color: var(--clr-text-muted); margin-top: 0.25rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; }
+
+/* Tables */
+.doc-table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+.doc-table th { text-align: left; padding: 0.75rem 1rem; background: #f8fafc; border-bottom: 1px solid var(--clr-border); color: var(--clr-text-muted); font-weight: 600; }
+.doc-table td { padding: 1rem; border-bottom: 1px solid var(--clr-border); }
+.doc-icon { margin-right: 0.5rem; }
+.ev-status { padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500; font-size: 0.8rem; }
+.ev-status.verified { background: #dcfce3; color: #15803d; }
+.ev-status.pending { background: #fef3c7; color: #b45309; }
+
+/* Judgment Placeholder */
+.judgment-placeholder { text-align: center; padding: 3rem 1rem; background: #f8fafc; border-radius: 8px; border: 1px dashed var(--clr-border); }
+.judgment-placeholder p { font-family: 'Inter', sans-serif; color: var(--clr-text-muted); }
+
+/* Print Media Query */
+@media print {
+    .no-print { display: none !important; }
+    body.details-body { background: white; padding: 0; margin: 0; }
+    .details-container { padding: 0; max-width: 100%; }
+    .legal-document-card { box-shadow: none; border: none; padding: 0; margin: 0; }
+    .legal-document-card { font-size: 12pt; }
+    .doc-section { break-inside: avoid; margin-bottom: 1.5rem; }
+    h1, h2 { color: black !important; }
+    .progress-container { border: 1px solid #ccc; box-shadow: none; margin-bottom: 2rem; break-inside: avoid; }
+}
+
+@media(max-width: 600px) {
+    .legal-document-card { padding: 1.5rem; }
+    .progress-timeline li span { display: none; }
+}

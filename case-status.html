@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Case Status | Digital Court System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        body { padding-top: 100px; background-color: #f8fafc; }
+        .status-container { max-width: 700px; margin: 0 auto; padding: var(--spacing-4); text-align: center; }
+        .search-box { 
+            background: white; border-radius: var(--radius-lg); padding: var(--spacing-5);
+            box-shadow: var(--shadow-md); border: 1px solid var(--clr-border); 
+            margin-bottom: var(--spacing-5);
+        }
+        .search-header { margin-bottom: var(--spacing-4); }
+        .search-header h1 { font-size: 2rem; color: var(--clr-primary-900); }
+        .search-header p { color: var(--clr-text-muted); font-size: 1.05rem; }
+        
+        .search-form { display: flex; gap: var(--spacing-3); flex-wrap: wrap; justify-content: center; }
+        .search-input { 
+            flex: 1; min-width: 250px; padding: 0.8rem 1.2rem; border: 2px solid var(--clr-border);
+            border-radius: 30px; font-family: inherit; font-size: 1rem; outline: none; transition: 0.2s;
+        }
+        .search-input:focus { border-color: var(--clr-primary-500); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .btn-search { padding: 0.8rem 2rem; border-radius: 30px; }
+
+        /* Results Card */
+        #result-card { display: none; text-align: left; animation: fadeIn 0.4s ease-out forwards; }
+        .result-wrapper { 
+            background: white; border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: var(--shadow-lg); border: 1px solid var(--clr-border);
+            border-top: 5px solid var(--clr-primary-600);
+        }
+        .result-header { padding: var(--spacing-4); border-bottom: 1px solid var(--clr-border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
+        .result-header h2 { font-size: 1.25rem; color: var(--clr-primary-900); margin: 0; }
+        
+        .result-body { padding: var(--spacing-4); }
+        .info-grid { display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); }
+        @media(min-width: 500px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .info-block { margin-bottom: 1rem; }
+        .info-label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--clr-text-muted); font-weight: 600; margin-bottom: 0.25rem; }
+        .info-value { display: block; font-size: 1.05rem; font-weight: 500; color: #0f172a; }
+        .val-parties { font-size: 1.15rem; color: var(--clr-primary-800); }
+
+        .timeline-box { background: #f1f5f9; padding: 1rem; border-radius: 8px; border-left: 3px solid var(--clr-primary-400); margin-top: 1rem; }
+        .timeline-box p { margin: 0 0 0.5rem 0; font-size: 0.95rem; }
+        .timeline-box p:last-child { margin-bottom: 0; }
+
+        .evidence-list { list-style: none; padding: 0; margin: 0; margin-top: 0.5rem; }
+        .evidence-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--clr-border);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .evidence-list li:last-child { border-bottom: none; }
+        .ev-file-link {
+            display: inline-flex; align-items: center; gap: 5px;
+            color: #2563eb; font-weight: 600; font-size: 0.85rem;
+            background: #eff6ff; border: 1px solid rgba(59,130,246,0.25);
+            border-radius: 6px; padding: 2px 8px; text-decoration: none;
+            cursor: pointer; transition: background 0.15s;
+        }
+        .ev-file-link:hover { background: #dbeafe; }
+        .ev-file-nolink {
+            display: inline-flex; align-items: center; gap: 5px;
+            color: #475569; font-weight: 500; font-size: 0.85rem;
+        }
+        .ev-status-chip {
+            font-size: 0.72rem; font-weight: 700; padding: 1px 8px;
+            border-radius: 20px; margin-left: auto;
+        }
+        .ev-status-chip.verified { background: #dcfce7; color: #15803d; }
+        .ev-status-chip.pending  { background: #fef3c7; color: #92400e; }
+        .ev-status-chip.rejected { background: #fee2e2; color: #b91c1c; }
+
+        .final-result-box { 
+            margin-top: 1.5rem; padding: 1.2rem; background: #fefce8; border: 1px solid #fef08a; 
+            border-radius: 8px; text-align: center;
+        }
+        .final-result-box.closed { background: #f0fdf4; border-color: #bbf7d0; }
+        
+        .status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; }
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-closed { background: #dcfce3; color: #15803d; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-message { 
+            display: none; padding: 1rem; background: #fef2f2; border: 1px solid #fca5a5;
+            color: #b91c1c; border-radius: var(--radius-md); font-weight: 500; margin-top: 1rem;
+        }
+
+        /* Print Optimization */
+        @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; background: white; }
+            .status-container { max-width: 100%; padding: 0; margin: 0; }
+            .search-box { display: none; }
+            .result-wrapper { box-shadow: none; border: none !important; }
+            .timeline-box { border: 1px solid #ccc; background: white; }
+            .final-result-box { border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar no-print">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="brand-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span id="nav-brand">Digital Court System</span>
+            </a>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="lang-toggle" class="btn-lang" aria-label="Toggle Language" style="position: relative; right: 0; top: 0;">
+                    <span class="lang-en active">EN</span>
+                    <span class="lang-divider">|</span>
+                    <span class="lang-hi">HI</span>
+                </button>
+                <a href="admin-login.html" class="btn-outline btn-sm" id="btn-login-nav">Admin Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="status-container fade-in visible">
+        <div class="search-box">
+            <div class="search-header">
+                <h1 id="page-title">Check Case Status</h1>
+                <p id="page-subtitle">Enter your official Case ID to track current standing and hearings.</p>
+            </div>
+            <form class="search-form" id="search-form">
+                <input type="text" id="search-input" class="search-input" placeholder="e.g. #CAS-2026-1234" required>
+                <button type="submit" class="btn btn-primary btn-search" id="btn-search">Search Case</button>
+            </form>
+            <div class="error-message" id="error-msg">Case not found. Please verify your ID.</div>
+        </div>
+
+        <div id="result-card">
+            <div class="result-wrapper">
+                <div class="result-header">
+                    <div>
+                        <h2 id="res-header-title" style="display:inline-block; margin-right: 10px;">Case Overview</h2>
+                        <span class="status-badge" id="res-status-badge" style="vertical-align: middle;">Pending</span>
+                    </div>
+                    <button class="btn btn-outline btn-sm no-print" id="btn-print" onclick="window.print()" style="padding: 4px 10px; font-size: 0.85rem; display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
+                        <span id="lbl-print">Print</span>
+                    </button>
+                </div>
+                <div class="result-body">
+                    
+                    <div class="info-grid">
+                        <div class="info-block">
+                            <span class="info-label" id="lbl-parties">Parties</span>
+                            <span class="info-value val-parties" id="val-parties">...</span>
+                        </div>
+                        <div class="info-block">
+                            <span class="info-label" id="lbl-type">Case Type & Date</span>
+                            <span class="info-value" id="val-type-date">...</span>
+                        </div>
+                    </div>
+
+                    <div class="info-block" style="margin-top: 1rem;">
+                        <span class="info-label" id="lbl-hearings">Hearing Timeline</span>
+                        <div class="timeline-box">
+                            <p><strong id="lbl-upcoming">Next Hearing:</strong> <span id="val-hearing-date">Pending Scheduling</span></p>
+                        </div>
+                    </div>
+
+                    <div class="info-block" style="margin-top: 1.5rem;">
+                        <span class="info-label" id="lbl-evidence">Submitted Evidence</span>
+                        <ul class="evidence-list" id="evidence-list">
+                            <!-- Dynamically populated by status.js from localStorage -->
+                        </ul>
+                        <div id="ev-empty-msg" style="display:none; font-size:0.88rem; color:#94a3b8; padding: 0.5rem 0; font-style:italic;">
+                            No evidence records submitted for this case.
+                        </div>
+                    </div>
+
+                    <div class="final-result-box" id="final-result-box">
+                        <span class="info-label" id="lbl-result" style="color: inherit; margin-bottom: 0.5rem;">Final Result</span>
+                        <strong id="val-result" style="font-size: 1.1rem; color: #b45309;">Proceedings active. Awaiting bench orders.</strong>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/status.js"></script>
+</body>
+</html>
